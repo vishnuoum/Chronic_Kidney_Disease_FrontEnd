@@ -6,9 +6,9 @@ class Service{
 
   Future<dynamic> classify({required String? age,required String? ba,required String? ane,required String? pe,required String? appet,
     required String? dm, required String? cad, required String? pc, required String? pcc,
-    required String? rbc, required String? su, required String? al, required String? sg,
+    required String? al, required String? sg,
     required String? htn, required String? bp, required String? bgr, required String? bu,
-    required String? sc, required String? sod, required String? pot, required String? hemo, required String? pcv,
+    required String? sc, required String? sod, required String? hemo, required String? pcv,
     required String? wc, required String? rc})async{
     try {
       dynamic response = await post(Uri.parse("http://192.168.18.2:3000/estimate"),
@@ -22,8 +22,6 @@ class Service{
             "cad": cad,
             "pc": pc,
             "pcc": pcc,
-            "rbc": rbc,
-            "su": su,
             "al": al,
             "sg": sg,
             "htn": htn,
@@ -32,7 +30,6 @@ class Service{
             "bu": bu,
             "sc": sc,
             "sod": sod,
-            "pot": pot,
             "hemo": hemo,
             "pcv": pcv,
             "wc": wc,

@@ -14,7 +14,7 @@ class _EstimatePageState extends State<EstimatePage> {
   Service service=Service();
   final ImagePicker _picker = ImagePicker();
 
-  String? ba="Select an option",ane="Select an option",pe="Select an option",appet="Select an option",dm="Select an option",cad="Select an option",pc="Select an option",pcc="Select an option",rbc="Select an option",su="Select an option",al="Select an option",sg="Select an option",htn="Select an option";
+  String? ba="Select an option",ane="Select an option",pe="Select an option",appet="Select an option",dm="Select an option",cad="Select an option",pc="Select an option",pcc="Select an option",al="Select an option",sg="Select an option",htn="Select an option";
   String? baVal="Select an option",aneVal="Select an option",peVal="Select an option",appetVal="Select an option",dmVal="Select an option",cadVal="Select an option",pcVal="Select an option",pccVal="Select an option",rbcVal="Select an option",suVal="Select an option",alVal="Select an option",sgVal="Select an option",htnVal="Select an option";
   TextEditingController age=TextEditingController(),
       bp=TextEditingController(),
@@ -22,7 +22,6 @@ class _EstimatePageState extends State<EstimatePage> {
       bu=TextEditingController(),
       sc=TextEditingController(),
       sod=TextEditingController(),
-      pot=TextEditingController(),
       hemo=TextEditingController(),
       pcv=TextEditingController(),
       wc=TextEditingController(),
@@ -37,8 +36,6 @@ class _EstimatePageState extends State<EstimatePage> {
     cad="Select an option";
     pc="Select an option";
     pcc="Select an option";
-    rbc="Select an option";
-    su="Select an option";
     al="Select an option";
     sg="Select an option";
     htn="Select an option";
@@ -48,7 +45,6 @@ class _EstimatePageState extends State<EstimatePage> {
     age.clear();
     sc.clear();
     sod.clear();
-    pot.clear();
     hemo.clear();
     pcv.clear();
     wc.clear();
@@ -119,12 +115,6 @@ class _EstimatePageState extends State<EstimatePage> {
         alVal = values["ALBUMIN"];
       }
     }
-    if(values.containsKey("RS")){
-      if(["Normal", "Abnormal"].contains(values["RS"])) {
-        rbcVal = values["RS"] == "Normal" ? "0" : "1";
-        rbc = values["RS"];
-      }
-    }
     if(values.containsKey("PC")){
       if(["Normal", "Abnormal"].contains(values["PC"])) {
         pc = values["PC"];
@@ -147,9 +137,6 @@ class _EstimatePageState extends State<EstimatePage> {
     }
     if(values.containsKey("SODIUM")){
       sod.text=values["SODIUM"];
-    }
-    if(values.containsKey("POTASSIUM")){
-      pot.text=values["POTASSIUM"];
     }
     if(values.containsKey("HB")){
       hemo.text=values["HB"];
@@ -313,65 +300,7 @@ class _EstimatePageState extends State<EstimatePage> {
                 ),
               ),
               SizedBox(height: 12,),
-              Text("Sugar Level"),
-              SizedBox(height: 5,),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 5,horizontal: 20),
-                decoration: BoxDecoration(
-                    color: Colors.blue[100],
-                    borderRadius: BorderRadius.circular(10)
-                ),
-                child: DropdownButton<String>(
-                  isExpanded: true,
-                  underline: SizedBox(),
-                  value: su,
-                  items: <String>["Select an option","0", "1", "2", "3", "4", "5"].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value,style: TextStyle(color: value=="Select an option"?Colors.grey[700]:Colors.black),),
-                    );
-                  }).toList(),
-                  onChanged: (val) {
-                    if(val!="Select an option") {
-                      setState(() {
-                        su = val;
-                        suVal=val;
-                      });
-                    }
-                  },
-                ),
-              ),
-              SizedBox(height: 12,),
-              Text("Red Blood Cell Status"),
-              SizedBox(height: 5,),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 5,horizontal: 20),
-                decoration: BoxDecoration(
-                    color: Colors.blue[100],
-                    borderRadius: BorderRadius.circular(10)
-                ),
-                child: DropdownButton<String>(
-                  isExpanded: true,
-                  underline: SizedBox(),
-                  value: rbc,
-                  items: <String>["Select an option","Normal", "Abnormal"].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value,style: TextStyle(color: value=="Select an option"?Colors.grey[700]:Colors.black),),
-                    );
-                  }).toList(),
-                  onChanged: (val) {
-                    if(val!="Select an option") {
-                      setState(() {
-                        rbc=val;
-                        rbcVal = val=="Normal"?"0":"1";
-                      });
-                    }
-                  },
-                ),
-              ),
-              SizedBox(height: 12,),
-              Text("Puss Cell"),
+              Text("Pus Cell"),
               SizedBox(height: 5,),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 5,horizontal: 20),
@@ -400,7 +329,7 @@ class _EstimatePageState extends State<EstimatePage> {
                 ),
               ),
               SizedBox(height: 12,),
-              Text("Puss Cell Clamps"),
+              Text("Pus Cell Clamps"),
               SizedBox(height: 5,),
               Container(
                 padding: EdgeInsets.symmetric(vertical: 5,horizontal: 20),
@@ -525,24 +454,6 @@ class _EstimatePageState extends State<EstimatePage> {
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     hintText: "Sodium",
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
-              SizedBox(height: 12,),
-              Text("Potassium Level"),
-              SizedBox(height: 5,),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 7,horizontal: 20),
-                decoration: BoxDecoration(
-                    color: Colors.blue[100],
-                    borderRadius: BorderRadius.circular(10)
-                ),
-                child: TextFormField(
-                  controller: pot,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    hintText: "Potassium",
                     border: InputBorder.none,
                   ),
                 ),
@@ -808,16 +719,16 @@ class _EstimatePageState extends State<EstimatePage> {
                   FocusScope.of(context).unfocus();
                   if(ba=="Select an option"||ane=="Select an option"||pe=="Select an option"||appet=="Select an option"||
                       dm=="Select an option"||cad=="Select an option"||pc=="Select an option"||pcc=="Select an option"||
-                      rbc=="Select an option"||su=="Select an option"||al=="Select an option"||sg=="Select an option"||
+                      al=="Select an option"||sg=="Select an option"||
                       htn=="Select an option"||bp.text==""||bgr.text==""||
                       bu.text==""||sc.text==""||sod.text==""||
-                      pot.text==""||hemo.text==""||pcv.text==""||
+                      hemo.text==""||pcv.text==""||
                       wc.text==""||rc.text==""||age.text==""){
                         alertDialog("Please fill up the form");
                   }
                   else{
                     showLoading(context);
-                    var result=await service.classify(age: age.text, ba: baVal, ane: aneVal, pe: peVal, appet: appetVal, dm: dmVal, cad: cadVal, pc: pcVal, pcc: pccVal, rbc: rbcVal, su: suVal, al: alVal, sg: sgVal, htn: htnVal, bp: bp.text, bgr: bgr.text, bu: bu.text, sc: sc.text, sod: sod.text, pot: pot.text, hemo: hemo.text, pcv: pcv.text, wc: wc.text, rc: rc.text);
+                    var result=await service.classify(age: age.text, ba: baVal, ane: aneVal, pe: peVal, appet: appetVal, dm: dmVal, cad: cadVal, pc: pcVal, pcc: pccVal, al: alVal, sg: sgVal, htn: htnVal, bp: bp.text, bgr: bgr.text, bu: bu.text, sc: sc.text, sod: sod.text, hemo: hemo.text, pcv: pcv.text, wc: wc.text, rc: rc.text);
                     Navigator.pop(context);
                     if(result=="ckd"){
                       alertDialog("You are diagnosed with Chronic Kidney Disease. Please visit the nearest hospital for treatment.");
