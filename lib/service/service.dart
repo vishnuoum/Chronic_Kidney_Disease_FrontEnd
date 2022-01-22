@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart';
+import 'package:http/io_client.dart';
 
 class Service{
 
@@ -11,7 +13,9 @@ class Service{
     required String? sc, required String? sod, required String? hemo, required String? pcv,
     required String? wc, required String? rc})async{
     try {
-      dynamic response = await post(Uri.parse("http://192.168.18.2:3000/estimate"),
+      HttpClient client = new HttpClient()..badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
+      var ioClient = new IOClient(client);
+      dynamic response = await ioClient.post(Uri.parse("https://192.168.18.2:3000/estimate"),
           body: {
             "age": age,
             "ba": ba,
@@ -48,12 +52,14 @@ class Service{
   
   Future<dynamic> extract({required String? path})async{
     try{
-      var request = new MultipartRequest("POST", Uri.parse("http://192.168.18.2:3000/extract"));
+      HttpClient client = new HttpClient()..badCertificateCallback = ((X509Certificate cert, String host, int port) => true);
+      var ioClient = new IOClient(client);
+      var request = new MultipartRequest("POST", Uri.parse("https://192.168.18.2:3000/extract"));
       request.files.add(await MultipartFile.fromPath(
         'pic',
         path!,
       ));
-      var response=await request.send();
+      var response=await ioClient.send(request);
       String body=await response.stream.bytesToString();
       if(body!="error"){
         return jsonDecode(body);
