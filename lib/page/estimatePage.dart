@@ -98,6 +98,10 @@ class _EstimatePageState extends State<EstimatePage> {
     );
   }
 
+  bool isNumeric(String s) {
+    return double.tryParse(s) != null;
+  }
+
   void extract(Map values){
     print(values);
     if(values.containsKey("BP")){
@@ -127,28 +131,36 @@ class _EstimatePageState extends State<EstimatePage> {
       pccVal=values["PCC"]=="Not"?"0":"1";
     }
     if(values.containsKey("BGR")){
-      bgr.text=values["BGR"];
+      if(isNumeric(values["BGR"]))
+        bgr.text=values["BGR"];
     }
     if(values.containsKey("SC")){
-      sc.text=values["SC"];
+      if(isNumeric(values["SC"]))
+        sc.text=values["SC"];
     }
     if(values.containsKey("BU")){
-      bu.text=values["BU"];
+      if(isNumeric(values["BU"]))
+        bu.text=values["BU"];
     }
     if(values.containsKey("SODIUM")){
-      sod.text=values["SODIUM"];
+      if(isNumeric(values["SODIUM"]))
+        sod.text=values["SODIUM"];
     }
     if(values.containsKey("HB")){
-      hemo.text=values["HB"];
+      if(isNumeric(values["HB"]))
+        hemo.text=values["HB"];
     }
     if(values.containsKey("PCV")){
-      pcv.text=values["PCV"];
+      if(isNumeric(values["BGR"]))
+        pcv.text=values["PCV"];
     }
     if(values.containsKey("WBC")){
-      wc.text=values["WBC"];
+      if(isNumeric(values["WBC"]))
+        wc.text=values["WBC"];
     }
     if(values.containsKey("RBC")){
-      rc.text=values["RBC"];
+      if(isNumeric(values["RBC"]))
+        rc.text=values["RBC"];
     }
     setState(() {
 
@@ -199,7 +211,13 @@ class _EstimatePageState extends State<EstimatePage> {
                         showLoading(context);
                         var values=await service.extract(path: image.path);
                         Navigator.pop(context);
-                        extract(values);
+                        if(values=="error"){
+                          alertDialog("Something went wrong with OCR");
+                        }
+                        else if(values=="netError")
+                          alertDialog("Please check your network connection and Try again.");
+                        else
+                          extract(values);
                       }, icon: Icon(Icons.photo),color: Colors.blue,tooltip: "Select from Gallery",),
                     ],
                   )
