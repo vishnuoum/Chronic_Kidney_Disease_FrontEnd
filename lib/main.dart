@@ -1,5 +1,8 @@
+import 'package:ckd_classifier/page/check.dart';
 import 'package:ckd_classifier/page/ckd.dart';
 import 'package:ckd_classifier/page/estimatePage.dart';
+import 'package:ckd_classifier/page/login.dart';
+import 'package:ckd_classifier/page/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -11,10 +14,17 @@ void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
   @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  @override
   Widget build(BuildContext context) {
+    print("hello");
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -31,8 +41,11 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       routes: {
-        "/": (context) => EstimatePage(),
-        "/ckd": (context) => CKD()
+        "/": (context) => Check(),
+        "/estimate": (context) => EstimatePage(),
+        "/login": (context) => Login(),
+        "/signup": (context) => Signup(),
+        "/ckd": (context) => CKD(),
       },
       initialRoute: "/",
     );

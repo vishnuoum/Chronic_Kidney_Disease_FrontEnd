@@ -1,6 +1,7 @@
 import 'package:ckd_classifier/service/service.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class EstimatePage extends StatefulWidget {
   const EstimatePage({Key? key}) : super(key: key);
@@ -10,9 +11,12 @@ class EstimatePage extends StatefulWidget {
 }
 
 class _EstimatePageState extends State<EstimatePage> {
+
+  late SharedPreferences sharedPreferences;
   
   Service service=Service();
   final ImagePicker _picker = ImagePicker();
+  String ageNum="";
 
   String? ba="Select an option",ane="Select an option",pe="Select an option",appet="Select an option",dm="Select an option",cad="Select an option",pc="Select an option",pcc="Select an option",al="Select an option",sg="Select an option",htn="Select an option";
   String? baVal="Select an option",aneVal="Select an option",peVal="Select an option",appetVal="Select an option",dmVal="Select an option",cadVal="Select an option",pcVal="Select an option",pccVal="Select an option",rbcVal="Select an option",suVal="Select an option",alVal="Select an option",sgVal="Select an option",htnVal="Select an option";
@@ -26,6 +30,23 @@ class _EstimatePageState extends State<EstimatePage> {
       pcv=TextEditingController(),
       wc=TextEditingController(),
       rc=TextEditingController();
+
+  calculateAge(DateTime birthDate) {
+    DateTime currentDate = DateTime.now();
+    int age = currentDate.year - birthDate.year;
+    int month1 = currentDate.month;
+    int month2 = birthDate.month;
+    if (month2 > month1) {
+      age--;
+    } else if (month1 == month2) {
+      int day1 = currentDate.day;
+      int day2 = birthDate.day;
+      if (day2 > day1) {
+        age--;
+      }
+    }
+    return age.toString();
+  }
   
   void reset(){
     ba="Select an option";
@@ -114,7 +135,7 @@ class _EstimatePageState extends State<EstimatePage> {
       }
     }
     if(values.containsKey("ALBUMIN")){
-      if(["0", "1", "2", "3", "4", "5"].contains(values["ALBUMIN"])) {
+      if(["0.0", "1.0", "2.0", "3.0", "4.0", "5.0"].contains(values["ALBUMIN"])) {
         al = values["ALBUMIN"];
         alVal = values["ALBUMIN"];
       }
@@ -168,16 +189,42 @@ class _EstimatePageState extends State<EstimatePage> {
   }
 
   @override
+  void initState() {
+    init();
+    super.initState();
+  }
+
+  void init()async{
+    sharedPreferences = await SharedPreferences.getInstance();
+    String? dob= sharedPreferences.getString("dob");
+    ageNum = calculateAge(DateTime.parse(dob.toString()));
+    age.text=ageNum;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       body: GestureDetector(
         onTap: (){
           FocusScope.of(context).unfocus();
         },
         child: SafeArea(
           child: ListView(
-            padding: EdgeInsets.only(top: 40,left: 20,right: 20,bottom: 30),
+            padding: EdgeInsets.only(top: 10,left: 20,right: 20,bottom: 30),
             children: [
+              Align(
+                alignment: Alignment.centerRight,
+                child: IconButton(
+                  tooltip: "Logout",
+                  color: Colors.blue,
+                  icon: Icon(Icons.logout),
+                  onPressed: (){
+                    sharedPreferences.clear();
+                    Navigator.pushReplacementNamed(context, "/");
+                  },
+                ),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -301,7 +348,7 @@ class _EstimatePageState extends State<EstimatePage> {
                   isExpanded: true,
                   underline: SizedBox(),
                   value: al,
-                  items: <String>["Select an option","0", "1", "2", "3", "4", "5"].map((String value) {
+                  items: <String>["Select an option","0.0", "1.0", "2.0", "3.0", "4.0", "5.0"].map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(value,style: TextStyle(color: value=="Select an option"?Colors.grey[700]:Colors.black),),
